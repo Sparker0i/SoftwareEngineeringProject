@@ -1,22 +1,10 @@
-import xml.etree.cElementTree as ET
-
 class Drug:
-    name = "Name"
-    id = "Id"
-
-    def init(self , name , id):
+    def __init__(self , name , id):
         self.name = name
         self.id = id
         
 class DrugClass:
-    direct_parent = "directParent"
-    kingdom = "kingdom"
-    super_class = "superClass"
-    class_ = "class_"
-    sub_class = "sub_class"
-    id = "id"
-
-    def init(self , direct_parent , kingdom , super_class , class_ , sub_class):
+    def __init__(self , direct_parent , kingdom , super_class , class_ , sub_class):
         self.direct_parent = direct_parent
         self.kingdom = kingdom
         self.super_class = super_class
@@ -24,14 +12,16 @@ class DrugClass:
         self.sub_class = sub_class
         self.id = id
 
-class XMLParser:
-    def parse_element_tree(self , filename):
-        tree = ET.parse(filename)
-        return tree
+class DrugTarget:
+    def __init__(self , position , id , name , organism):
+        self.position = position
+        self.id = id
+        self.name = name
+        self.organism = organism
 
-class DataExtractor:
-    def initialize_classes(self , tree):
-        root = tree.getroot()
-        for drug in root.getchildren():
-            if drug.find('{http://www.drugbank.ca}name').text and drug.find('{http://www.drugbank.ca}cas-number').text:
-                print(drug.find('{http://www.drugbank.ca}name').text, drug.find('{http://www.drugbank.ca}cas-number').text)
+class DrugInteractions:
+    def __init__(self , id , name , description):
+        self.id = id
+        self.name = name
+        self.description = description
+

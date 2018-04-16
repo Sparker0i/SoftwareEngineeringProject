@@ -1,4 +1,5 @@
 from models import *
+from classes import *
                 
 def main():
     tree = XMLParser().parse_element_tree("/home/sparker0i/fulldatabase.xml")
