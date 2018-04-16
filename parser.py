@@ -1,7 +1,8 @@
-import xml.etree.cElementTree as ET
+from models import *
+                
+def main():
+    tree = XMLParser().parse_element_tree("/home/sparker0i/fulldatabase.xml")
+    DataExtractor().initialize_classes(tree)
 
-tree = ET.parse('/home/sparker0i/fulldatabase.xml')
-drugbank = tree.getroot()
-
-for drug in drugbank.getchildren():
-    print(drug.find('{http://www.drugbank.ca}name').text)
+if __name__ == "__main__":
+    main()
