@@ -31,6 +31,7 @@ class XMLParser:
 
 class DataExtractor:
     def initialize_classes(self , tree):
-        for drug in tree.getchildren():
+        root = tree.getroot()
+        for drug in root.getchildren():
             if drug.find('{http://www.drugbank.ca}name').text and drug.find('{http://www.drugbank.ca}cas-number').text:
-                print(drug.find('{http://www.drugbank.ca}name').text, " " , drug.find('{http://www.drugbank.ca}cas-number').text)
+                print(drug.find('{http://www.drugbank.ca}name').text, drug.find('{http://www.drugbank.ca}cas-number').text)
