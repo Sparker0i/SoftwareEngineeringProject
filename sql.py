@@ -11,7 +11,7 @@ class DumpToSQL:
             username = data['user']
             password = data['password']
             database = data['database']
-        self.db = my.connect(host , username , password , database , charset="utf8mb4", use_unicode=True)
+        self.db = my.connect(host=host , user=username , password=password , db=database, use_unicode=True)
     
     def insert_drug(self , drug):
         cursor = self.db.cursor()
