@@ -29,3 +29,14 @@ class DumpToSQL:
             cursor.close()
             self.db.close()
         
+    # 1. You will get an object of the respective class with every insert operation invoked. Write code to add them taking into reference insert_drug() from above
+    # 2. To find what elements needed to be added, look at classes.py and also refer to the XML
+
+    def insert_druginteraction(self, druginteraction):
+        print()
+
+    def insert_drugclass(self , drugclass):
+        print()
+
+    def insert_drugtarget(self , drugtarget):
+        print()
