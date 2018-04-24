@@ -12,16 +12,19 @@ class DrugClass:
         self.sub_class = sub_class
         self.id = id
 
+#id refers to the drug 
 class DrugTarget:
-    def __init__(self , position , id , name , organism):
+    def __init__(self , position , id , drugbank_id, name , organism):
         self.position = position
         self.id = id
+        self.drugbank_id = drugbank_id
         self.name = name
         self.organism = organism
 
 class DrugInteractions:
-    def __init__(self , id , name , description):
+    def __init__(self , id , drugbank_id , name , description):
         self.id = id
+        self.drugbank_id = drugbank_id
         self.name = name
         self.description = description
 
