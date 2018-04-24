@@ -33,12 +33,12 @@ class DumpToSQL:
     # 2. To find what elements needed to be added, look at classes.py and also refer to the XML
 
     def insert_druginteraction(self, druginteraction):
-	cursor = self.db.cursor()
-	u = druginteraction.id
+        cursor = self.db.cursor()
+        u = druginteraction.id
         v = druginteraction.drugbank_id
-	w = druginteraction.name
-	x = druginteraction.description
-         try:
+        w = druginteraction.name
+        x = druginteraction.description
+        try:
             sql = "INSERT INTO DRUGINTERACTION(id,drugbank_id,name,description) VALUES (\"" + u + "\",\"" + v + "\",\""+ w + "\",\""+ x + "\");"
             cursor.execute(sql)
             self.db.commit()
@@ -49,16 +49,16 @@ class DumpToSQL:
         finally:
             cursor.close()
             self.db.close()
-       //print()
 
     def insert_drugclass(self , drugclass):
-	u = drugclass.direct_parent
+        cursor = self.db.cursor()
+        u = drugclass.direct_parent
         v = drugclass.kingdom
-	w = drugclass.super_class
-	x = drugclass.class
-	y = drugclass.sub_class
-	z = drugclass.id
-	 try:
+        w = drugclass.super_class
+        x = drugclass.class_
+        y = drugclass.sub_class
+        z = drugclass.id
+        try:
             sql = "INSERT INTO DRUGCLASS(direct_parent,kingdom,super_class,class,sub_class,id) VALUES (\"" + u + "\",\"" + v + "\",\""+ w + "\",\""+ x +"\",\"" + y +"\",\""+ z + "\");"
             cursor.execute(sql)
             self.db.commit()
@@ -69,16 +69,15 @@ class DumpToSQL:
         finally:
             cursor.close()
             self.db.close()
-       	
-	//print()
 
     def insert_drugtarget(self , drugtarget):
-	u = drugtarget.position
+        cursor = self.db.cursor()
+        u = drugtarget.position
         v = drugtarget.id
-	w = drugtarget.drugbank_id
-	x = drugtarget.name
-	y = drugtarget.organism        
-	 try:
+        w = drugtarget.drugbank_id
+        x = drugtarget.name
+        y = drugtarget.organism        
+        try:
             sql = "INSERT INTO DRUGTARGET(position ,id,drugbank_id,name,organism) VALUES (\"" + u + "\",\"" + v + "\",\""+ w + "\",\""+ x +"\",\"" + y + "\");"
             cursor.execute(sql)
             self.db.commit()
@@ -89,5 +88,3 @@ class DumpToSQL:
         finally:
             cursor.close()
             self.db.close()
-       	
-	//print()

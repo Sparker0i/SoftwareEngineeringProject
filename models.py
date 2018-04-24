@@ -16,8 +16,8 @@ class DrugClass:
 class DrugTarget:
     def __init__(self , position , id , drugbank_id, name , organism):
         self.position = position
-        self.id = id
-        self.drugbank_id = drugbank_id
+        self.id = id #One that refers to the Root drug
+        self.drugbank_id = drugbank_id #One that refers to the target of the current Drug
         self.name = name
         self.organism = organism
 

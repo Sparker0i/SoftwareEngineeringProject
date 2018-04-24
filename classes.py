@@ -20,15 +20,19 @@ class DataExtractor:
 
     #To find what elements to search for, refer to models.py and also their respective names in the XML file
     def check_drugclass(self , drug):
-        if drug.find('{http://www.drugbank.ca}direct-print').text and drug.find('{http://www.drugbank.ca}kingdom').text and drug.find('{http://www.drugbank.ca}superclass').text and drug.find('{http://www.drugbank.ca}class').text and drug.find('{http://www.drugbank.ca}drugbank-id').text:
+        if drug.find('{http://www.drugbank.ca}direct-parent').text and drug.find('{http://www.drugbank.ca}kingdom').text and drug.find('{http://www.drugbank.ca}superclass').text and drug.find('{http://www.drugbank.ca}class').text and drug.find('{http://www.drugbank.ca}drugbank-id').text:
             return (True , DrugClass(drug.find('{http://www.drugbank.ca}direct-print').text , drug.find('{http://www.drugbank.ca}kingdom').text , drug.find('{http://www.drugbank.ca}superclass').text , drug.find('{http://www.drugbank.ca}class').text , drug.find('{http://www.drugbank.ca}drugbank-id').text))
         return False
 
-    def check_drugtarget(self , drug):
-        targets = drug.find('{http://www.drugbank.ca}targets')
-        for target in targets:
+    def check_drugtarget(self , target):
+        if not target.find('{http://www.drugbank.ca}drugbank-id').text:
+            return False
+        targets = target.find('{http://www.drugbank.ca}targets')
+        for drug in targets:
+            if not drug.attrib.get('{http://www.drugbank.ca}position').text:
+                return False
             if drug.find('{http://www.drugbank.ca}position').text and drug.find('{http://www.drugbank.ca}name').text and drug.find('{http://www.drugbank.ca}drugbank-id').text and drug.find('{http://www.drugbank.ca}id').text:
-                return (True, DrugTarget(drug.find('{http://www.drugbank.ca}position').text , drug.find('{http://www.drugbank.ca}name').text , drug.find('{http://www.drugbank.ca}drugbank-id').text , drug.find('{http://www.drugbank.ca}id').text))
+                return (True, DrugTarget(position=drug.attrib.get('{http://www.drugbank.ca}position').text , name=drug.find('{http://www.drugbank.ca}name').text , id=drug.find('{http://www.drugbank.ca}drugbank-id').text , drugbank_id=drug.find('{http://www.drugbank.ca}id').text , organism=drug.find('{http://www.drugbank.ca}organism').text))
         return False
     
     def check_interactions(self , drug):
@@ -42,8 +46,9 @@ class DataExtractor:
         for drug in root.getchildren():
             check , value = self.check_drug(drug)
             check1 , value1 = self.check_drugclass(drug)
-            if check:
-                sql.DumpToSQL().insert_drug(value)
+            #if check:
+            #    sql.DumpToSQL().insert_drug(value)
             if check1:
-                sql.DumpToSQL().insert_drug(value1)
+                print("OK")
+            #    sql.DumpToSQL().insert_drug(value1)
 

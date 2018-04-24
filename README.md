@@ -45,13 +45,17 @@ The schema for the tables is given below:
         position INT(11),
         organism TEXT,
         name TEXT,
-        id varchar(20) PRIMARY KEY REFERENCES DRUG(id)
+        drugbank_id varchar(20) REFERENCES DRUG(id),
+        id varchar(20) PRIMARY KEY REFERENCES DRUG(id),
+        PRIMARY KEY(drugbank_id , id)
     );
 
     CREATE TABLE DRUG_INTERACTIONS (
         name TEXT,
         description TEXT,
-        id varchar(20) PRIMARY KEY REFERENCES DRUG(id)
+        id varchar(20) PRIMARY KEY REFERENCES DRUG(id),
+        drugbank_id varchar(20) REFERENCES DRUG(id),
+        PRIMARY KEY(drugbank_id , id)
     );
 
 Make sure you create these tables before proceeding
