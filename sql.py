@@ -59,7 +59,7 @@ class DumpToSQL:
         y = drugclass.sub_class
         z = drugclass.id
         try:
-            sql = "INSERT INTO DRUGCLASS(direct_parent,kingdom,super_class,class,sub_class,id) VALUES (\"" + u + "\",\"" + v + "\",\""+ w + "\",\""+ x +"\",\"" + y +"\",\""+ z + "\");"
+            sql = "INSERT INTO DRUG_CLASS(directparent,kingdom,superclass,class,subclass,id) VALUES (\"" + u + "\",\"" + v + "\",\""+ w + "\",\""+ x +"\",\"" + y +"\",\""+ z + "\");"
             cursor.execute(sql)
             self.db.commit()
         except UnicodeEncodeError:

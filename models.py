@@ -4,7 +4,7 @@ class Drug:
         self.id = id
         
 class DrugClass:
-    def __init__(self , direct_parent , kingdom , super_class , class_ , sub_class):
+    def __init__(self , direct_parent , kingdom , super_class , class_ , sub_class, id):
         self.direct_parent = direct_parent
         self.kingdom = kingdom
         self.super_class = super_class
