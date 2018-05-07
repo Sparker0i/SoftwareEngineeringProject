@@ -2,6 +2,7 @@ import xml.etree.cElementTree as ET
 from models import *
 import MySQLdb as my
 import sql
+import time
 
 class XMLParser:
     def parse_element_tree(self , filename):
@@ -71,23 +72,28 @@ class DataExtractor:
         root = tree.getroot()
         count = 0
         for drug in root.getchildren():
-            #check , value = self.check_drug(drug)
+            #check , value = self.check_drug   (drug)
             #check1 , value1 = self.check_drugclass(drug)
             check2 , value2 = self.check_interactions(drug)
             #check3 , value3 = self.check_drugtarget(drug)
-            '''
+            
             if check:
                 count += 1
                 print(count , value.name , value.id)
                 sql.DumpToSQL().insert_drug(value)
+            print("Done With Drug")
+            time.sleep(3)
             
             if check1:
                 count += 1
                 print(count , value1.id , value1.class_ , value1.sub_class , value1.super_class , value1.kingdom)
                 sql.DumpToSQL().insert_drugclass(value1)
-            '''
+            print("Done with Drug Class")
+            time.sleep(3)
             
             if check2:
                 count += 1
                 print()
                 sql.DumpToSQL().insert_druginteraction(value2)
+            print("Done with Drug Interaction")
+            time.sleep(3)
