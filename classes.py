@@ -1,4 +1,4 @@
-import xml.etree.cElementTree as ET
+import xml.etree.ElementTree as ET
 from models import *
 import MySQLdb as my
 import sql
@@ -29,15 +29,18 @@ class DataExtractor:
         flag = 0
         id = drug.find('{http://www.drugbank.ca}drugbank-id').text
         for child in drug.findall('{http://www.drugbank.ca}classification'):
+            '''
+            print(child.tag , child.find(child.tag).text)
+            '''
             if child.find('{http://www.drugbank.ca}kingdom').text:
                 kingdom = child.find('{http://www.drugbank.ca}kingdom').text
-            elif child.find('{http://www.drugbank.ca}direct-parent').text:
+            if child.find('{http://www.drugbank.ca}direct-parent').text:
                 direct_parent = child.find('{http://www.drugbank.ca}direct-parent').text
-            elif child.find('{http://www.drugbank.ca}superclass').text:
+            if child.find('{http://www.drugbank.ca}superclass').text:
                 super_class = child.find('{http://www.drugbank.ca}superclass').text
-            elif child.find('{http://www.drugbank.ca}subclass').text:
+            if child.find('{http://www.drugbank.ca}subclass').text:
                 subclass = child.find('{http://www.drugbank.ca}subclass').text
-            elif child.find('{http://www.drugbank.ca}class').text:
+            if child.find('{http://www.drugbank.ca}class').text:
                 class_ = child.find('{http://www.drugbank.ca}class').text
         return (True , DrugClass(direct_parent=direct_parent , kingdom=kingdom , class_=class_ , sub_class=subclass, super_class=super_class , id=id))
 
@@ -72,28 +75,30 @@ class DataExtractor:
         root = tree.getroot()
         count = 0
         for drug in root.getchildren():
-            check , value = self.check_drug   (drug)
+            #check , value = self.check_drug   (drug)
             check1 , value1 = self.check_drugclass(drug)
-            check2 , value2 = self.check_interactions(drug)
+            #check2 , value2 = self.check_interactions(drug)
             #check3 , value3 = self.check_drugtarget(drug)
             
+            '''
             if check:
                 count += 1
                 print(count , value.name , value.id)
                 sql.DumpToSQL().insert_drug(value)
             print("Done With Drug")
             time.sleep(3)
+            '''
             
             if check1:
                 count += 1
                 print(count , value1.id , value1.class_ , value1.sub_class , value1.super_class , value1.kingdom)
                 sql.DumpToSQL().insert_drugclass(value1)
-            print("Done with Drug Class")
-            time.sleep(3)
             
+            '''
             if check2:
                 count += 1
                 print()
                 sql.DumpToSQL().insert_druginteraction(value2)
             print("Done with Drug Interaction")
             time.sleep(3)
+            '''
