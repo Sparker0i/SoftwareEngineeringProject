@@ -56,28 +56,30 @@ class DataExtractor:
         interactions = drug.find('{http://www.drugbank.ca}drug-interactions')
         id = drug.find('{http://www.drugbank.ca}drugbank-id').text
         array = []
-        for beep in interactions.findall('{http://www.drugbank.ca}drug-interactions'):
+        for beep in interactions.findall('{http://www.drugbank.ca}drug-interaction'):
             drugbank_id = "Not Available"
-            name = "Not Available"
+            name_ = "Not Available"
             description = "Not Available"
+            print(beep.tag)
             for child in beep:
-                if child.find('{http://www.drugbank.ca}drugbank-id'):
-                    drugbank_id = child.find('{http://www.drugbank.ca}drugbank-id').text
-                elif child.find('{http://www.drugbank.ca}name'):
-                    name = child.find('{http://www.drugbank.ca}name').text
-                elif child.find('{http://www.drugbank.ca}description'):
-                    description = child.find('{http://www.drugbank.ca}description').text
-            array.append(DrugInteractions(id , drugbank_id , name , description))
+                print(child.tag)
+                if child.tag == '{http://www.drugbank.ca}drugbank-id':
+                    drugbank_id = child.text
+                if child.tag == '{http://www.drugbank.ca}name':
+                    name_ = child.text
+                if child.tag == '{http://www.drugbank.ca}description':
+                    description = child.text
+            array.append(DrugInteractions(id , drugbank_id , name_ , description))
 
-        return (True, DrugInteractions(id=id , name=name , drugbank_id=drugbank_id , description=description))
+        return (True, array)
     
     def initialize_classes(self , tree):
         root = tree.getroot()
         count = 0
         for drug in root.getchildren():
             #check , value = self.check_drug   (drug)
-            check1 , value1 = self.check_drugclass(drug)
-            #check2 , value2 = self.check_interactions(drug)
+            #check1 , value1 = self.check_drugclass(drug)
+            check2 , value2 = self.check_interactions(drug)
             #check3 , value3 = self.check_drugtarget(drug)
             
             '''
@@ -87,18 +89,18 @@ class DataExtractor:
                 sql.DumpToSQL().insert_drug(value)
             print("Done With Drug")
             time.sleep(3)
-            '''
+            
             
             if check1:
                 count += 1
                 print(count , value1.id , value1.class_ , value1.sub_class , value1.super_class , value1.kingdom)
                 sql.DumpToSQL().insert_drugclass(value1)
-            
             '''
+
             if check2:
                 count += 1
-                print()
-                sql.DumpToSQL().insert_druginteraction(value2)
-            print("Done with Drug Interaction")
+                for value1 in value2:
+                    print(count , value1.id , value1.drugbank_id , value1.name , value1.description)
+                #sql.DumpToSQL().insert_druginteraction(value2)
+            #print("Done with Drug Interaction")
             time.sleep(3)
-            '''
