@@ -72,8 +72,8 @@ class DataExtractor:
         root = tree.getroot()
         count = 0
         for drug in root.getchildren():
-            #check , value = self.check_drug   (drug)
-            #check1 , value1 = self.check_drugclass(drug)
+            check , value = self.check_drug   (drug)
+            check1 , value1 = self.check_drugclass(drug)
             check2 , value2 = self.check_interactions(drug)
             #check3 , value3 = self.check_drugtarget(drug)
             
