@@ -21,6 +21,9 @@ class DrugTarget:
         self.name = name
         self.organism = organism
 
+    def print(self):
+        print(self.position , self.id , self.drugbank_id , self.name , self.organism)
+
 class DrugInteractions:
     def __init__(self , id , drugbank_id , name , description):
         self.id = id

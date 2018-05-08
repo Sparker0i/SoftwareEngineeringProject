@@ -39,7 +39,7 @@ class DumpToSQL:
         w = druginteraction.name
         x = druginteraction.description
         try:
-            sql = "INSERT INTO DRUGINTERACTION(id,drugbank_id,name,description) VALUES (\"" + u + "\",\"" + v + "\",\""+ w + "\",\""+ x + "\");"
+            sql = "INSERT INTO DRUG_INTERACTION(id,drugbank_id,name,description) VALUES (\"" + u + "\",\"" + v + "\",\""+ w + "\",\""+ x + "\");"
             cursor.execute(sql)
             self.db.commit()
         except UnicodeEncodeError:
@@ -78,7 +78,7 @@ class DumpToSQL:
         x = drugtarget.name
         y = drugtarget.organism        
         try:
-            sql = "INSERT INTO DRUGTARGET(position ,id,drugbank_id,name,organism) VALUES (\"" + u + "\",\"" + v + "\",\""+ w + "\",\""+ x +"\",\"" + y + "\");"
+            sql = "INSERT INTO DRUG_TARGET(position ,id,drugbank_id,name,organism) VALUES (\"" + u + "\",\"" + v + "\",\""+ w + "\",\""+ x +"\",\"" + y + "\");"
             cursor.execute(sql)
             self.db.commit()
         except UnicodeEncodeError:

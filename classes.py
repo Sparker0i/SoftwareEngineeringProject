@@ -46,12 +46,30 @@ class DataExtractor:
 
     def check_drugtarget(self , drug):
         targets = drug.find('{http://www.drugbank.ca}targets')
-        for target in targets:
-            if target.attrib.get('position') and drug.find('{http://www.drugbank.ca}name').text and drug.find('{http://www.drugbank.ca}drugbank-id').text and drug.find('{http://www.drugbank.ca}id').text:
-                return (True, DrugTarget(position=target.attrib.get('position') , name=drug.find('{http://www.drugbank.ca}name').text , id=drug.find('{http://www.drugbank.ca}drugbank-id').text , drugbank_id=drug.find('{http://www.drugbank.ca}id').text , organism=drug.find('{http://www.drugbank.ca}organism').text))
-            else:
-                return (True, DrugTarget(position="0" , name=drug.find('{http://www.drugbank.ca}name').text , id=drug.find('{http://www.drugbank.ca}drugbank-id').text , drugbank_id=drug.find('{http://www.drugbank.ca}id').text , organism=drug.find('{http://www.drugbank.ca}organism').text))
-    
+        name = "Not Available"
+        id = drug.find('{http://www.drugbank.ca}drugbank-id').text
+        position = "0"
+        organism = "Not Available"
+        drugbank_id = "Not Available"
+        array = []
+        for beep in targets.findall('{http://www.drugbank.ca}target'):
+            for child in beep:
+                if child.tag == '{http://www.drugbank.ca}name':
+                    name = child.text
+                if child.tag == '{http://www.drugbank.ca}organism':
+                    organism = child.text
+                if child.tag == '{http://www.drugbank.ca}id':
+                    drugbank_id = child.text
+                if beep.attrib.get('position'):
+                    position = beep.attrib.get('position')
+                else:
+                    position = "0"
+            target = DrugTarget(position=position, name=name, id=id, drugbank_id=drugbank_id , organism=organism)
+            target.print()
+            array.append(target)
+        return (True , array)
+
+
     def check_interactions(self , drug):
         interactions = drug.find('{http://www.drugbank.ca}drug-interactions')
         id = drug.find('{http://www.drugbank.ca}drugbank-id').text
@@ -62,7 +80,6 @@ class DataExtractor:
             description = "Not Available"
             print(beep.tag)
             for child in beep:
-                print(child.tag)
                 if child.tag == '{http://www.drugbank.ca}drugbank-id':
                     drugbank_id = child.text
                 if child.tag == '{http://www.drugbank.ca}name':
@@ -76,31 +93,43 @@ class DataExtractor:
     def initialize_classes(self , tree):
         root = tree.getroot()
         count = 0
+        count1 = 0
+        '''
         for drug in root.getchildren():
-            #check , value = self.check_drug   (drug)
-            #check1 , value1 = self.check_drugclass(drug)
-            check2 , value2 = self.check_interactions(drug)
-            #check3 , value3 = self.check_drugtarget(drug)
-            
-            '''
+            check , value = self.check_drug(drug)
             if check:
                 count += 1
                 print(count , value.name , value.id)
                 sql.DumpToSQL().insert_drug(value)
-            print("Done With Drug")
-            time.sleep(3)
+        count = 0
+        '''
+        
+        for drug in root.getchildren():
+            #check1 , value1 = self.check_drugclass(drug)
+            #check2 , value2 = self.check_interactions(drug)
+            check3 , value3 = self.check_drugtarget(drug)
             
-            
-            if check1:
+            '''if check1:
                 count += 1
                 print(count , value1.id , value1.class_ , value1.sub_class , value1.super_class , value1.kingdom)
                 sql.DumpToSQL().insert_drugclass(value1)
-            '''
+            
+            count = 0
 
             if check2:
                 count += 1
+                count1 = 0
                 for value1 in value2:
-                    print(count , value1.id , value1.drugbank_id , value1.name , value1.description)
-                #sql.DumpToSQL().insert_druginteraction(value2)
-            #print("Done with Drug Interaction")
-            time.sleep(3)
+                    count1 += 1
+                    print(count1 , count , value1.id , value1.drugbank_id , value1.name , value1.description)
+                sql.DumpToSQL().insert_druginteraction(value2)
+            
+            count = 0
+            count1 = 0
+            '''
+            #if check3:
+                #sql.DumpToSQL().insert_drugtarget(value3)
+            count = 0
+            count1 = 0
+
+
