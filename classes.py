@@ -65,7 +65,6 @@ class DataExtractor:
                 else:
                     position = "0"
             target = DrugTarget(position=position, name=name, id=id, drugbank_id=drugbank_id , organism=organism)
-            target.print()
             array.append(target)
         return (True , array)
 
@@ -78,7 +77,6 @@ class DataExtractor:
             drugbank_id = "Not Available"
             name_ = "Not Available"
             description = "Not Available"
-            print(beep.tag)
             for child in beep:
                 if child.tag == '{http://www.drugbank.ca}drugbank-id':
                     drugbank_id = child.text
@@ -92,44 +90,30 @@ class DataExtractor:
     
     def initialize_classes(self , tree):
         root = tree.getroot()
-        count = 0
-        count1 = 0
-        '''
         for drug in root.getchildren():
             check , value = self.check_drug(drug)
             if check:
-                count += 1
-                print(count , value.name , value.id)
+                print("$" , value.name , value.id)
                 sql.DumpToSQL().insert_drug(value)
-        count = 0
-        '''
         
         for drug in root.getchildren():
-            #check1 , value1 = self.check_drugclass(drug)
-            #check2 , value2 = self.check_interactions(drug)
             check3 , value3 = self.check_drugtarget(drug)
+
+            if check3:
+                for value1 in value3:
+                    value1.print()
+                sql.DumpToSQL().insert_drugtarget(value3)
+            '''
+            check1 , value1 = self.check_drugclass(drug)
+            check2 , value2 = self.check_interactions(drug)
             
-            '''if check1:
-                count += 1
-                print(count , value1.id , value1.class_ , value1.sub_class , value1.super_class , value1.kingdom)
+            
+            if check1:
+                print("#" , value1.id , value1.class_ , value1.sub_class , value1.super_class , value1.kingdom)
                 sql.DumpToSQL().insert_drugclass(value1)
-            
-            count = 0
 
             if check2:
-                count += 1
-                count1 = 0
                 for value1 in value2:
-                    count1 += 1
-                    print(count1 , count , value1.id , value1.drugbank_id , value1.name , value1.description)
+                    print("###" , value1.id , value1.drugbank_id , value1.name , value1.description)
                 sql.DumpToSQL().insert_druginteraction(value2)
-            
-            count = 0
-            count1 = 0
             '''
-            #if check3:
-                #sql.DumpToSQL().insert_drugtarget(value3)
-            count = 0
-            count1 = 0
-
-

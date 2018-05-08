@@ -1,5 +1,5 @@
-from models import *
-from classes import *
+from classes import XMLParser , DataExtractor
+import xml.etree.ElementTree
 import json
                 
 def main():

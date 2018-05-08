@@ -38,23 +38,23 @@ The schema for the tables is given below:
         superclass TEXT,
         class TEXT,
         subclass TEXT,
-        id varchar(20) PRIMARY KEY
+        id varchar(20) PRIMARY KEY REFERENCES DRUG(id)
     );
 
     CREATE TABLE DRUG_TARGET (
         position INT(11),
         organism TEXT,
         name TEXT,
-        drugbank_id varchar(20),
-        id varchar(20),
+        drugbank_id varchar(20) REFERENCES DRUG(id),
+        id varchar(20) REFERENCES DRUG(id),
         PRIMARY KEY(drugbank_id , id)
     );
 
     CREATE TABLE DRUG_INTERACTIONS (
         name TEXT,
         description TEXT,
-        id varchar(20),
-        drugbank_id varchar(20),
+        id varchar(20) REFERENCES DRUG(id),
+        drugbank_id varchar(20) REFERENCES DRUG(id),
         PRIMARY KEY(drugbank_id , id)
     );
 
