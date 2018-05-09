@@ -15,8 +15,16 @@ class DataExtractor:
 
     # Checks Every Drug. If every required value is present, it returns true, along with a new object of the Drug class
     def check_drug(self , drug):
+        groups = drug.find('{http://www.drugbank.ca}groups')
+        approved = 0
+        for group in groups.iter('{http://www.drugbank.ca}group'):
+            if group.text:
+                approved = 1
+            else:
+                approved = 0
+        
         if drug.find('{http://www.drugbank.ca}name').text and drug.find('{http://www.drugbank.ca}drugbank-id').text:
-            return (True , Drug(drug.find('{http://www.drugbank.ca}name').text , drug.find('{http://www.drugbank.ca}drugbank-id').text))
+            return (True , Drug(drug.find('{http://www.drugbank.ca}name').text , drug.find('{http://www.drugbank.ca}drugbank-id').text , approved))
         return False
 
     #To find what elements to search for, refer to models.py and also their respective names in the XML file
@@ -90,10 +98,11 @@ class DataExtractor:
     
     def initialize_classes(self , tree):
         root = tree.getroot()
+
         for drug in root.getchildren():
             check , value = self.check_drug(drug)
             if check:
-                print("$" , value.name , value.id)
+                value.print()
                 sql.DumpToSQL().insert_drug(value)
         
         for drug in root.getchildren():
@@ -102,18 +111,20 @@ class DataExtractor:
             if check3:
                 for value1 in value3:
                     value1.print()
-                sql.DumpToSQL().insert_drugtarget(value3)
-            '''
+                    if isinstance(value1.organism , type(None)):
+                        value2 = DrugTarget(value1.position , value1.id , value1.drugbank_id , value1.name , "Not Available")
+                        sql.DumpToSQL().insert_drugtarget(value2)
+                    else:
+                        sql.DumpToSQL().insert_drugtarget(value1)
+            
             check1 , value1 = self.check_drugclass(drug)
             check2 , value2 = self.check_interactions(drug)
             
-            
             if check1:
-                print("#" , value1.id , value1.class_ , value1.sub_class , value1.super_class , value1.kingdom)
+                value1.print()
                 sql.DumpToSQL().insert_drugclass(value1)
 
             if check2:
                 for value1 in value2:
-                    print("###" , value1.id , value1.drugbank_id , value1.name , value1.description)
+                    value1.print()
                 sql.DumpToSQL().insert_druginteraction(value2)
-            '''

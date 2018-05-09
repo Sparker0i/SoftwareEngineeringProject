@@ -29,7 +29,8 @@ The schema for the tables is given below:
 
     CREATE TABLE DRUG (
         name TEXT,
-        id varchar(20) PRIMARY KEY
+        id varchar(20) PRIMARY KEY,
+        approved TINYINT(1)
     );
 
     CREATE TABLE DRUG_CLASS (

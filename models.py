@@ -1,7 +1,11 @@
 class Drug:
-    def __init__(self , name , id):
+    def __init__(self , name , id , approved):
         self.name = name
         self.id = id
+        self.approved = approved
+
+    def print(self):
+        print("$" , self.name , self.id , self.approved)
         
 class DrugClass:
     def __init__(self , direct_parent , kingdom , super_class , class_ , sub_class, id):
@@ -11,6 +15,9 @@ class DrugClass:
         self.class_ = class_
         self.sub_class = sub_class
         self.id = id
+
+    def print(self):
+        print("##" , self.direct_parent , self.kingdom , self.super_class , self.class_ , self.sub_class , self.id)
 
 #id refers to the drug 
 class DrugTarget:
@@ -22,7 +29,7 @@ class DrugTarget:
         self.organism = organism
 
     def print(self):
-        print("##" , self.position , self.id , self.drugbank_id , self.name , self.organism)
+        print("#" , self.position , self.id , self.drugbank_id , self.name , self.organism)
 
 class DrugInteractions:
     def __init__(self , id , drugbank_id , name , description):
@@ -30,4 +37,7 @@ class DrugInteractions:
         self.drugbank_id = drugbank_id
         self.name = name
         self.description = description
+
+    def print(self):
+        print("###" , self.id , self.drugbank_id , self.name , self.description)
 

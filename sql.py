@@ -25,8 +25,6 @@ class DumpToSQL:
             print("Could Not Insert Unicode " + u + " " + v)
         except TypeError:
             print("Could Not Insert Type " + u + " " + v)
-        except Exception:
-            print("Could Not Insert Exception " + u + " " + v + " " + w + " " + x + " " + y)
         finally:
             cursor.close()
             self.db.close()
@@ -50,7 +48,7 @@ class DumpToSQL:
             except TypeError:
                 print("Could Not Insert Type " + u + " " + v + " " + w + " " + x)
             except Exception:
-                print("Could Not Insert Exception " + u + " " + v + " " + w + " " + x + " " + y)
+                print("Could Not Insert Exception " + u + " " + v + " " + w + " " + x)
         cursor.close()
         self.db.close()
 
@@ -76,23 +74,22 @@ class DumpToSQL:
             cursor.close()
             self.db.close()
 
-    def insert_drugtarget(self , drugtargets):
+    def insert_drugtarget(self , drugtarget):
         cursor = self.db.cursor()
-        for drugtarget in drugtargets:
-            u = drugtarget.position
-            v = drugtarget.id
-            w = drugtarget.drugbank_id
-            x = drugtarget.name
-            y = drugtarget.organism        
-            try:
-                sql = "INSERT INTO DRUG_TARGET(position ,id,drugbank_id,name,organism) VALUES (\"" + u + "\",\"" + v + "\",\""+ w + "\",\""+ x +"\",\"" + y + "\");"
-                cursor.execute(sql)
-                self.db.commit()
-            except UnicodeEncodeError:
-                print("Could Not Insert Unicode " + u + " " + v + " " + w + " " + x + " " + y)
-            except TypeError:
-                print("Could Not Insert Type " + u + " " + v + " " + w + " " + x + " " + y)
-            except Exception:
-                print("Could Not Insert Exception " + u + " " + v + " " + w + " " + x + " " + y)
+        u = drugtarget.position
+        v = drugtarget.id
+        w = drugtarget.drugbank_id
+        x = drugtarget.name
+        y = drugtarget.organism        
+        try:
+            sql = "INSERT INTO DRUG_TARGET(position ,id,drugbank_id,name,organism) VALUES (\"" + u + "\",\"" + v + "\",\""+ w + "\",\""+ x +"\",\"" + y + "\");"
+            cursor.execute(sql)
+            self.db.commit()
+        except UnicodeEncodeError:
+            print("Could Not Insert Unicode " + u + " " + v + " " + w + " " + x + " " + y)
+        except TypeError:
+            print("Could Not Insert Type " + u + " " + v + " " + w + " " + x + " " + y)
+        except Exception:
+            print("Could Not Insert Exception " + u + " " + v + " " + w + " " + x + " " + y)
         cursor.close()
         self.db.close()
