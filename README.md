@@ -25,6 +25,7 @@ In this db, create 4 tables DRUG, DRUG_CLASS, DRUG_INTERACTIONS, DRUG_TARGET
 The schema for the tables is given below:
 
     CREATE DATABASE DRUGBANK;
+    ALTER DATABASE DRUGBANK CHARACTER SET utf8 COLLATE utf8_general_ci;
     USE DRUGBANK;
 
     CREATE TABLE DRUG (
@@ -51,7 +52,7 @@ The schema for the tables is given below:
         PRIMARY KEY(drugbank_id , id)
     );
 
-    CREATE TABLE DRUG_INTERACTIONS (
+    CREATE TABLE DRUG_INTERACTION (
         name TEXT,
         description TEXT,
         id varchar(20) REFERENCES DRUG(id),
