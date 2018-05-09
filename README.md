@@ -31,6 +31,7 @@ The schema for the tables is given below:
     CREATE TABLE DRUG (
         name TEXT,
         id varchar(20) PRIMARY KEY,
+        description TEXT
         approved TINYINT(1)
     );
 
