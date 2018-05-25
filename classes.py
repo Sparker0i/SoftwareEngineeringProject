@@ -17,14 +17,17 @@ class DataExtractor:
     def check_drug(self , drug):
         groups = drug.find('{http://www.drugbank.ca}groups')
         approved = 0
-        for group in groups.iter('{http://www.drugbank.ca}group'):
-            if group.text:
+        for child in groups.findall('{http://www.drugbank.ca}group'):
+            if child.text == "approved":
                 approved = 1
             else:
                 approved = 0
         
         if drug.find('{http://www.drugbank.ca}name').text and drug.find('{http://www.drugbank.ca}drugbank-id').text:
-            return (True , Drug(drug.find('{http://www.drugbank.ca}name').text , drug.find('{http://www.drugbank.ca}drugbank-id').text , approved))
+            description = "Not Available"
+            if drug.find('{http://www.drugbank.ca}description').text:
+                description = drug.find('{http://www.drugbank.ca}description').text
+            return (True , Drug(drug.find('{http://www.drugbank.ca}name').text , drug.find('{http://www.drugbank.ca}drugbank-id').text , approved , description))
         return False
 
     #To find what elements to search for, refer to models.py and also their respective names in the XML file
@@ -34,12 +37,8 @@ class DataExtractor:
         super_class = "Not Available"
         subclass = "Not Available"
         class_ = "Not Available"
-        flag = 0
         id = drug.find('{http://www.drugbank.ca}drugbank-id').text
         for child in drug.findall('{http://www.drugbank.ca}classification'):
-            '''
-            print(child.tag , child.find(child.tag).text)
-            '''
             if child.find('{http://www.drugbank.ca}kingdom').text:
                 kingdom = child.find('{http://www.drugbank.ca}kingdom').text
             if child.find('{http://www.drugbank.ca}direct-parent').text:
@@ -96,14 +95,14 @@ class DataExtractor:
 
         return (True, array)
     
-    def initialize_classes(self , tree):
+    def initialize_classes(self , tree , dump):
         root = tree.getroot()
 
         for drug in root.getchildren():
             check , value = self.check_drug(drug)
             if check:
                 value.print()
-                sql.DumpToSQL().insert_drug(value)
+                dump.insert_drug(value)
         
         for drug in root.getchildren():
             check3 , value3 = self.check_drugtarget(drug)
@@ -113,18 +112,19 @@ class DataExtractor:
                     value1.print()
                     if isinstance(value1.organism , type(None)):
                         value2 = DrugTarget(value1.position , value1.id , value1.drugbank_id , value1.name , "Not Available")
-                        sql.DumpToSQL().insert_drugtarget(value2)
+                        dump.insert_drugtarget(value2)
                     else:
-                        sql.DumpToSQL().insert_drugtarget(value1)
+                        dump.insert_drugtarget(value1)
             
             check1 , value1 = self.check_drugclass(drug)
             check2 , value2 = self.check_interactions(drug)
             
             if check1:
                 value1.print()
-                sql.DumpToSQL().insert_drugclass(value1)
+                dump.insert_drugclass(value1)
 
             if check2:
                 for value1 in value2:
                     value1.print()
-                sql.DumpToSQL().insert_druginteraction(value2)
+                dump.insert_druginteraction(value2)
+

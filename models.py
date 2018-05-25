@@ -1,11 +1,12 @@
 class Drug:
-    def __init__(self , name , id , approved):
+    def __init__(self , name , id , approved , description):
         self.name = name
         self.id = id
         self.approved = approved
+        self.description = description
 
     def print(self):
-        print("$" , self.name , self.id , self.approved)
+        print("$" , self.name , self.id , self.approved , self.description)
         
 class DrugClass:
     def __init__(self , direct_parent , kingdom , super_class , class_ , sub_class, id):

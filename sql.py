@@ -1,4 +1,5 @@
 import MySQLdb as my
+from _mysql_exceptions import IntegrityError
 import json
 
 class DumpToSQL:
@@ -17,17 +18,20 @@ class DumpToSQL:
         cursor = self.db.cursor()
         u = drug.name
         v = drug.id
+        w = drug.approved
+        x = drug.description
         try:
-            sql = "INSERT INTO DRUG(name , id) VALUES (\"" + u + "\",\"" + v + "\");"
-            cursor.execute(sql)
+            sql = "INSERT INTO DRUG(name , id , approved , description) VALUES (%s , %s , %s , %s)"
+            cursor.execute(sql , [u , v , str(w) , x])
             self.db.commit()
         except UnicodeEncodeError:
             print("Could Not Insert Unicode " + u + " " + v)
         except TypeError:
             print("Could Not Insert Type " + u + " " + v)
+        except IntegrityError:
+            print()
         finally:
             cursor.close()
-            self.db.close()
         
     # 1. You will get an object of the respective class with every insert operation invoked. Write code to add them taking into reference insert_drug() from above
     # 2. To find what elements needed to be added, look at classes.py and also refer to the XML
@@ -40,17 +44,17 @@ class DumpToSQL:
             w = druginteraction.name
             x = druginteraction.description
             try:
-                sql = "INSERT INTO DRUG_INTERACTIONS(id,drugbank_id,name,description) VALUES (\"" + u + "\",\"" + v + "\",\""+ w + "\",\""+ x + "\");"
+                sql = "INSERT INTO DRUG_INTERACTION(id,drugbank_id,name,description) VALUES (\"" + u + "\",\"" + v + "\",\""+ w + "\",\""+ x + "\");"
                 cursor.execute(sql)
                 self.db.commit()
             except UnicodeEncodeError:
                 print("Could Not Insert Unicode " + u + " " + v + " " + w + " " + x)
             except TypeError:
                 print("Could Not Insert Type " + u + " " + v + " " + w + " " + x)
-            except Exception:
-                print("Could Not Insert Exception " + u + " " + v + " " + w + " " + x)
+            except IntegrityError:
+                print()
+            
         cursor.close()
-        self.db.close()
 
     def insert_drugclass(self , drugclass):
         cursor = self.db.cursor()
@@ -68,11 +72,10 @@ class DumpToSQL:
             print("Could Not Insert Unicode " + u + " " + v + " " + w + " " + x + " " + y + " " + z)
         except TypeError:
             print("Could Not Insert Type " + u + " " + v + " " + w + " " + x + " " + y + " " + z)
-        except Exception:
-                print("Could Not Insert Exception " + u + " " + v + " " + w + " " + x + " " + y)
+        except IntegrityError:
+            print()
         finally:
             cursor.close()
-            self.db.close()
 
     def insert_drugtarget(self , drugtarget):
         cursor = self.db.cursor()
@@ -89,7 +92,9 @@ class DumpToSQL:
             print("Could Not Insert Unicode " + u + " " + v + " " + w + " " + x + " " + y)
         except TypeError:
             print("Could Not Insert Type " + u + " " + v + " " + w + " " + x + " " + y)
-        except Exception:
-            print("Could Not Insert Exception " + u + " " + v + " " + w + " " + x + " " + y)
+        except IntegrityError:
+            print()
         cursor.close()
+
+    def terminate(self):
         self.db.close()
